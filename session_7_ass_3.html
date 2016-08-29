@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Bootstrap Example</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <style> #user-details {width: 50%;} </style>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+	<div class="container-fluid" id="main-content">
+		<h2 class="greetings">Click on the below button to get registered!</h2>
+	  <!-- Trigger the modal with a button -->
+		<button type="button" id="signup-modal" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Sign Up</button>
+
+		<!-- Modal -->
+		<div id="myModal" class="modal fade" role="dialog">
+		  <div class="modal-dialog">
+
+			<!-- Modal content-->
+			<div class="modal-content">
+			  <div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h4 class="modal-title">Sign up to stay in touch!!</h4>
+			  </div>
+			  <div class="modal-body">
+				<div class="container-fluid">
+				  <div id="head" class="alert alert-danger"></div>
+				  <form id="user-register-form">
+					<div class="row">
+					  <div class="form-group col-sm-6 ">
+						<label for="inputFirstname" class="col-form-label">First Name<span class="small">*</span></label>
+						<input type="text" class="form-control" id="inputFirstname" placeholder="First name">
+					  </div>
+					  
+					  <div class="form-group col-sm-6">
+						<label for="inputLastname" class="col-form-label">Last Name<span class="small">*</span></label>
+						<input type="text" class="form-control" id="inputLastname" placeholder="Last name">
+					  </div>
+					</div>
+					<div class="form-group row">
+					  <label for="inputEmail" class="col-sm-2 col-form-label">Email<span class="small">*</span></label>
+					  <div class="col-sm-10">
+						<input type="email" class="form-control" id="inputEmail" placeholder="Email">
+					  </div>
+					</div>
+					<div class="form-group row">
+					  <label for="inputPassword" class="col-sm-2 col-form-label">Password<span class="small">*</span></label>
+					  <div class="col-sm-10">
+						<input type="password" class="form-control" id="inputPassword" placeholder="Password">
+					  </div>
+					</div>
+					<fieldset class="form-group row">
+					  <label class="col-form-label col-sm-2">Gender<span class="small">*</span></label>
+					  <div class="col-sm-10">
+						<div class="form-check">
+						  <label class="form-check-inline">
+							<input class="form-check-input" type="radio" name="genderRadios" id="genderRadios1" value="Male">
+							Male
+						  </label>
+						
+						  <label class="form-check-inline">
+							<input class="form-check-input" type="radio" name="genderRadios" id="genderRadios2" value="Female">
+							Female
+						  </label>
+						</div>
+					  </div>
+					</fieldset>
+					<div class="form-group row">
+					  <div class="col-sm-10">
+						<div class="form-check">
+						  <label class="form-check-label">
+							<input class="form-check-input" id="checkboxAgreement" type="checkbox"> I agree to the terms and conditions.<span class="small">*</span>
+						  </label>
+						</div>
+					  </div>
+					</div>
+					<div class="form-group row">
+					  <div class="offset-sm-2 col-sm-10">
+						<button type="submit" class="btn btn-primary submit">Submit</button>
+					  </div>
+					</div>
+				  </form>
+				</div>			
+			  </div>
+			</div>
+
+		  </div>
+		</div>
+		<div class="table-responsive" id="user-details"></div>
+	</div>
+	
+	<script>
+		$(document).ready(function(){
+			$('#head').hide();
+			$("#user-register-form").submit(function(event){
+				event.preventDefault();
+				// Initializing Variables With Form Element Values
+				var firstname = $('#inputFirstname').val();
+				var lastname = $('#inputLastname').val();
+				var email = $('#inputEmail').val();
+				var password = $('#inputPassword').val();
+				var gender = $('input[name=genderRadios]:checked').val(); 
+				var check_agreement = $('#checkboxAgreement').is(":checked");
+				
+				// Initializing Variables With Regular Expressions
+				var name_regex = /^[a-zA-Z]+$/;
+				var email_regex = /^[\w\-\.\+]+\@[a-zA-Z0-9\.\-]+\.[a-zA-z0-9]{2,4}$/;
+				var number_regex = /[0-9]/;
+				var lowercase_regex = /[a-z]/;
+				var uppercase_regex = /[A-Z]/;
+				
+				// To Check Empty Form Fields.
+				if (firstname.length == 0 || lastname.length == 0 || password.length == 0 || email.length == 0 ) {
+					$('#head').text("Error: All fields marked as * are mandatory.").fadeIn(1000); // This Segment Displays The Validation Rule For All Fields
+					//$("#inputFirstname").parent().addClass("has-error").end().focus();
+					return false;
+				}
+				// Validating First Name Field.
+				else if (!firstname.match(name_regex) || firstname.length == 0) {
+					$('#head').text("Error: For your name please use alphabets only").fadeIn(1000); // This Segment Displays The Validation Rule For Name
+					$("#inputFirstname").parent().addClass("has-error").end().focus();
+					return false;
+				}
+				// Validating last Name Field.
+				else if (!lastname.match(name_regex) || lastname.length == 0) {
+					$('#head').text("Error: For your name please use alphabets only").fadeIn(1000); // This Segment Displays The Validation Rule For Name
+					$("#inputLastname").parent().addClass("has-error").end().focus();
+					return false;
+				}
+				// Validating Email Field.
+				else if (!email.match(email_regex) || email.length == 0) {
+					$('#head').text("Error: Please enter a valid email address").fadeIn(1000); // This Segment Displays The Validation Rule For Email
+					$("#inputEmail").parent().addClass("has-error").end().focus();
+					return false;
+				}
+				// Validating Password length.
+				else if(password.length < 6){
+					$('#head').text("Error: Password must contain at least six characters!").fadeIn(1000);
+					$("#inputPassword").parent().addClass("has-error").end().focus();
+					return false;
+				}
+				// Validating Password to contain number
+				else if(!password.match(number_regex)) {
+					$('#head').text("Error: password must contain at least one number (0-9)!").fadeIn(1000);
+					$("#inputPassword").parent().addClass("has-error").end().focus();
+					return false;
+				}
+				// Validating Password to contain one lowercase letter
+				else if(!password.match(lowercase_regex)) {
+					$('#head').text("Error: password must contain at least one lowercase letter (a-z)!").fadeIn(1000);
+					$("#inputPassword").parent().addClass("has-error").end().focus();
+					return false;
+				  }
+				// Validating Password to contain one uppercase letter  
+				else if(!password.match(uppercase_regex)) {
+					$('#head').text("Error: password must contain at least one uppercase letter (A-Z)!").fadeIn(1000);
+					$("#inputPassword").parent().addClass("has-error").end().focus();
+					return false;
+				} 
+				// Validating Gender radios
+				else if(!gender){
+					$('#head').text("Error: Please choose you gender!").fadeIn(1000);
+					return false;
+				}
+				// Validating Terms and Conditions checkbox
+				else if(!check_agreement){
+					$('#head').text("Error: Please check the terms and conditions!").fadeIn(1000);
+					return false;
+				} 
+				else {
+					$(".has-error").removeClass("has-error");
+					$('#head').removeClass("alert-danger").addClass("alert-success").html("Success: Form has been submitted successfully!").fadeOut(2000,function(){				
+						//Close form
+						$("button.close").click();						
+						$("#signup-modal").remove();
+						//Greet User	
+						$("h2.greetings").text("Welcome " + firstname + "!");
+						createUserTable(firstname,lastname,email,gender);
+					});
+				}
+			});
+		});
+		
+		function createUserTable(firstname,lastname,email,gender){
+			var userTable = $('<table class="table table-reflow table-sm"></table>');
+			userTable.html("<thead><tr><th>Name</th><th>Email</th><th>Gender</th></tr></thead>" +
+			"<tbody><tr><td>" + firstname + " " + lastname + "</td><td>" + email + "</td><td>" + gender + "</td></tr></tbody>");
+			$("#user-details")
+				.append("<h3>User profile details :</h3>")
+				.append(userTable);
+		}
+	</script>
+</body>
+</html>
+
